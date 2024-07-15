@@ -1,0 +1,26 @@
+name: Unzip and Commit
+
+on:
+  push:
+    paths:
+      - '*.zip'
+
+jobs:
+  unzip:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Unzip file
+        run: |
+          unzip '*.zip' -d extracted
+          mv extracted/* .
+          rm -rf extracted
+          rm *.zip
+      - name: Commit files
+        run: |
+          git config --global user.name 'emretecno'
+          git config --global user.email 'theostekno@gmail.com'
+          git add .
+          git commit -m "Unzipped files"
+          git push
+          
